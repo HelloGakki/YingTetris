@@ -136,7 +136,6 @@ namespace Tetris
         private BlocksControl()
         {
             InitializeComponent();
-            
         }
 
         public BlocksControl(BlocksShape blocksShape, BlocksStatus blockStatus) : this()
