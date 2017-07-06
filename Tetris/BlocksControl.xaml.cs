@@ -133,7 +133,7 @@ namespace Tetris
                                                         { 0, 1, 0, 0 },     ///TType
                                                         { 0, 0, 0, 0 } } }  ///TType
                                                  };
-        private BlocksControl()
+        public BlocksControl()
         {
             InitializeComponent();
         }

@@ -33,7 +33,6 @@ namespace Tetris
                 var model = new GameViewModel();
                 DataContext = model;
                 model.StartNewGame();
-                //ShowMaster.Game = model;
                 ShowMaster.AutoDownInit();
                 ShowMaster.DelayClear();
                 ShowMaster.AutoDownStart();

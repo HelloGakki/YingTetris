@@ -38,8 +38,7 @@ namespace Tetris.ViewModel
         }
         public GameViewModel()
         {
-            _score = 0;
-            _level = 1;
+            CurrentPlayer = new Player();
         }
         // 开始新游戏路由命令
         public static RoutedCommand StartNewGameCommand =
@@ -143,16 +142,15 @@ namespace Tetris.ViewModel
         }
         public void CreatePlayer()
         {
-            CurrentPlayer = new Player();
             CurrentPlayer.Name = "Admin";
             CurrentPlayer.HighestScore = 0;
         }
         public void InitializationGame()
         {
-            Level = 0;
+            Level = 5;
             Score = 0;
             currentX = 6;
-            currentY = 0;
+            currentY = -3;
             currentShape = CurrentBlocks.BlocksShape;
             currentStatus = CurrentBlocks.BlocksStatus;
         }
