@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Tetris.ViewModel;
 
 namespace Tetris
 {
@@ -21,6 +22,34 @@ namespace Tetris
         public GameClient()
         {
             InitializeComponent();
+        }
+
+        private void CommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Close)
+                this.Close();
+            if (e.Command == GameViewModel.StartNewGameCommand)
+            {
+                var model = new GameViewModel();
+                DataContext = model;
+                model.StartNewGame();
+                //ShowMaster.Game = model;
+                ShowMaster.AutoDownInit();
+                ShowMaster.DelayClear();
+                ShowMaster.AutoDownStart();
+            }
+            e.Handled = true;
+        }
+
+        private void CommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+            if (e.Command == ApplicationCommands.Close)
+                e.CanExecute = true;
+            if (e.Command == GameViewModel.StartNewGameCommand)
+                e.CanExecute = true;
+            if (e.Command == GameViewModel.ShowAboutCommand)
+                e.CanExecute = false;
+            e.Handled = true;
         }
     }
 }

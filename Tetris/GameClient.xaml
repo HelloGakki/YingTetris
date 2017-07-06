@@ -4,17 +4,50 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Tetris"
+        xmlns:src="clr-namespace:Tetris"
+        xmlns:vm="clr-namespace:Tetris.ViewModel"
         mc:Ignorable="d"
-        Title="GameClient" Height="300" Width="300">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="192"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
+        Title="GameClient" Height="400" Width="300" ResizeMode="NoResize">
+    <Window.CommandBindings>
+        <CommandBinding Command="Close" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
+        <CommandBinding Command="vm:GameViewModel.StartNewGameCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
+        <CommandBinding Command="vm:GameViewModel.ShowAboutCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
+    </Window.CommandBindings>
+    <Window.DataContext>
+        <vm:GameViewModel/>
+    </Window.DataContext>
+    <Grid ShowGridLines="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="AUTO"/>
             <RowDefinition Height="320"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        <DockPanel >
+            <Menu x:Name="clientMenu" Background="Black" Foreground="White" FontWeight="Bold" >
+                <MenuItem Header="_File" >
+                    <MenuItem Header="_New Game" Height="22" Width="200" Foreground="Black" Command="vm:GameViewModel.StartNewGameCommand"/>
+                    <MenuItem Header="_Close" Height="22" Width="200" Foreground="Black" Command="Close"/>
+                </MenuItem>
+                <MenuItem Header="_Tool">
+                    <MenuItem Header="_Options" Height="22" Width="200" Foreground="Black"/>
+                </MenuItem>
+                <MenuItem Header="_Help">
+                    <MenuItem Header="_About" Height="22" Width="200" Foreground="Black" HorizontalAlignment="Left" Command="vm:GameViewModel.ShowAboutCommand"/>
+                </MenuItem>
+            </Menu>
+        </DockPanel>
+        <DockPanel Grid.Row="1" >
+            <src:PlayGroundControl x:Name="ShowMaster" Game="{Binding }" Level="{Binding Level}"/>
+            <WrapPanel DockPanel.Dock="Right" Background="#FFE4E4E4">
+                <Label Content="玩家:"/>
+                <Label x:Name="playerLabel" Content="Admin" FontWeight="Bold"/>
+                <Label Content="Level:"/>
+                <Label x:Name="levelLable" Content="9" FontWeight="Bold"/>
+                <Label Content="Score:"/>
+                <Label x:Name="scoreLable" Content="1000" FontWeight="Bold" />
+                <Label Content="Next:" Margin="0 22 0 0"/>
+                <Canvas x:Name="hintCanvas" Width="64" Height="64" Margin="22 10 0 0" Background="Aqua"/>
+            </WrapPanel>
+        </DockPanel>
     </Grid>
 </Window>
