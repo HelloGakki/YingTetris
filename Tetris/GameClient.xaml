@@ -10,9 +10,17 @@
         Title="GameClient" Height="400" Width="300" ResizeMode="NoResize">
     <Window.CommandBindings>
         <CommandBinding Command="Close" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
-        <CommandBinding Command="vm:GameViewModel.StartNewGameCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
-        <CommandBinding Command="vm:GameViewModel.ShowAboutCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
+        <CommandBinding Command="vm:GameViewModel.StartNewGameCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="vm:GameViewModel.ShowAboutCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="vm:GameViewModel.BlocksTransformationCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="vm:GameViewModel.BlocksLeftCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="vm:GameViewModel.BlocksRightCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
     </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="Space" Command="vm:GameViewModel.BlocksTransformationCommand" x:Name="_111"/>
+        <KeyBinding Key="Left" Command="vm:GameViewModel.BlocksLeftCommand" />
+        <KeyBinding Key="Right" Command="vm:GameViewModel.BlocksRightCommand" />
+    </Window.InputBindings>
     <Window.DataContext>
         <vm:GameViewModel/>
     </Window.DataContext>
@@ -37,7 +45,7 @@
             </Menu>
         </DockPanel>
         <DockPanel Grid.Row="1" >
-            <src:PlayGroundControl x:Name="ShowMaster" Game="{Binding }" Level="{Binding Level}"/>
+            <src:PlayGroundControl x:Name="ShowMaster" Game="{Binding }" Level="{Binding Level}" />
             <WrapPanel DockPanel.Dock="Right" Background="#FFE4E4E4">
                 <Label Content="玩家:"/>
                 <Label x:Name="playerLabel" Content="{Binding CurrentPlayer.Name}" FontWeight="Bold"/>
@@ -47,9 +55,13 @@
                 <Label x:Name="scoreLable" Content="{Binding Score}" FontWeight="Bold" />
                 <Label Content="Next:" Margin="0 22 0 0"/>
                 <Canvas x:Name="hintCanvas" Width="64" Height="64" Margin="22 10 0 0" >
-                    <src:BlocksControl BlocksShape="{Binding CurrentBlocks.BlocksShape}" BlocksStatus="{Binding CurrentBlocks.BlocksStatus}"/>
+                    <src:BlocksControl BlocksShape="{Binding NextShape}" BlocksStatus="{Binding NextStatus}"/>
                 </Canvas>
             </WrapPanel>
         </DockPanel>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFE4E4E4">
+            <Label Content="Message:"/>
+            <Label Content="测试版本" VerticalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -19,6 +19,7 @@ namespace Tetris
     /// </summary>
     public partial class BlocksControl : UserControl
     {
+        public int[,] blocksArray;
         public static readonly int[,,,] blockArray = {
                                                     { { { 1, 1, 0, 0 },     ///OType
                                                         { 1, 1, 0, 0 },     ///OType
@@ -176,26 +177,40 @@ namespace Tetris
 
         private void ReDrawBlocks()
         {
-            blockShowCanvas.Children.Clear();
+            blockShowGrid.Children.Clear();
             DrawBlocks();
         }
 
         private void DrawBlocks()
         {
             List<BlockControl> blockList = new List<BlockControl>();
+            blocksArray = new int[4, 4];
             for (int y = 0; y < 4; y++)
             {
                 for (int x = 0; x < 4; x++)
                 {
                     if (blockArray[(int)BlocksShape, (int)BlocksStatus, y, x] == 1)
                     {
+                        blocksArray[y, x] = 1;
                         BlockControl blockControl = new BlockControl(BlocksShape);
                         blockControl.Margin = new Thickness(x * 16, y * 16, 0, 0);
+                        blockControl.HorizontalAlignment = HorizontalAlignment.Left;
+                        blockControl.VerticalAlignment = VerticalAlignment.Top;
                         blockList.Add(blockControl);
                     }
                 }
             }
-            blockList.ForEach(x => blockShowCanvas.Children.Add(x));
+            blockList.ForEach(x => blockShowGrid.Children.Add(x));
+        }
+
+        public List<BlockControl> GetBlocksList()
+        {
+            List<BlockControl> blockList = new List<BlockControl>();
+            foreach (BlockControl blockControl in blockShowGrid.Children)
+            {
+                blockList.Add(blockControl);
+            }
+            return blockList;
         }
     }
 }

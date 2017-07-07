@@ -10,7 +10,7 @@
         <Style TargetType="Image" x:Key="BlockImageStyle">
             <Style.Triggers>
                 <DataTrigger Binding="{Binding ElementName=BlockUserControl, Path=BlocksShape}" Value="OType">
-                    <Setter Property="Source" Value=".\Image\Block\Yellow.gif"/>
+                    <Setter Property="Source" Value=".\Image\Block\Blue.gif"/>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding ElementName=BlockUserControl, Path=BlocksShape}" Value="IType">
                     <Setter Property="Source" Value=".\Image\Block\Cyan.gif"/>

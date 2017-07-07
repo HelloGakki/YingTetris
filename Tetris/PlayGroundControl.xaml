@@ -6,6 +6,9 @@
              xmlns:local="clr-namespace:Tetris"
              mc:Ignorable="d" 
              Height="320" Width="192">
-    <Canvas x:Name="gameSurface">
-    </Canvas>
+    <Grid >
+        <Grid x:Name="gameSurface"/>
+        <!--<Label Content="坐标:"  HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <TextBlock x:Name="gameSurfaceLabel"   HorizontalAlignment="Left" VerticalAlignment="Top" Margin="0,20,0,0" TextWrapping="WrapWithOverflow"/>-->
+    </Grid>
 </UserControl>

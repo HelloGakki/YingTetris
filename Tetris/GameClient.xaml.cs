@@ -37,6 +37,12 @@ namespace Tetris
                 ShowMaster.DelayClear();
                 ShowMaster.AutoDownStart();
             }
+            if (e.Command == GameViewModel.BlocksTransformationCommand)
+                ShowMaster.BlocksTransformation();
+            if (e.Command == GameViewModel.BlocksLeftCommand)
+                ShowMaster.DelayBlocksLeft();
+            if (e.Command == GameViewModel.BlocksRightCommand)
+                ShowMaster.DelayBlocksRight();
             e.Handled = true;
         }
 
@@ -48,6 +54,12 @@ namespace Tetris
                 e.CanExecute = true;
             if (e.Command == GameViewModel.ShowAboutCommand)
                 e.CanExecute = false;
+            if (e.Command == GameViewModel.BlocksTransformationCommand)
+                e.CanExecute = true;
+            if (e.Command == GameViewModel.BlocksLeftCommand)
+                e.CanExecute = true;
+            if (e.Command == GameViewModel.BlocksRightCommand)
+                e.CanExecute = true;
             e.Handled = true;
         }
     }

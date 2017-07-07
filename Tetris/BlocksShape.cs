@@ -7,7 +7,7 @@ namespace Tetris
 {
     public enum BlocksShape
     {
-        OType,
+        OType = 1,
         IType,
         LType,
         JType,

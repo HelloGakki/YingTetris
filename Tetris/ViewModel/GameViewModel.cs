@@ -12,19 +12,19 @@ namespace Tetris.ViewModel
         /// </summary>
         public readonly int backGroundX = 12;
         public readonly int backGroundY = 20;
-        public static int[,] backGround;
+        public int[,] backGround;
         /// <summary>
         /// 当前砖块坐标,状态和形状
         /// </summary>
-        public int currentX = 0;
-        public int currentY = 0;
-        public BlocksShape currentShape;
-        public BlocksStatus currentStatus;
+        public int currentX;
+        public int currentY;
+        private BlocksShape currentShape;
+        private BlocksStatus currentStatus;
         /// <summary>
         /// 下一个砖块状态和形状
         /// </summary>
-        public BlocksShape nextShape;
-        public BlocksStatus nextStatus;
+        private BlocksShape nextShape;
+        private BlocksStatus nextStatus;
 
 
         private int _score, _level;
@@ -48,6 +48,15 @@ namespace Tetris.ViewModel
         public static RoutedCommand ShowAboutCommand =
             new RoutedCommand("Show About", typeof(GameViewModel),
                 new InputGestureCollection(new List<InputGesture> { new KeyGesture(Key.A, ModifierKeys.Control) }));
+        // 砖块变形态命令
+        public static RoutedCommand BlocksTransformationCommand =
+            new RoutedCommand("Blocks Transformation", typeof(GameViewModel));
+        // 砖块左移
+        public static RoutedCommand BlocksLeftCommand =
+            new RoutedCommand("Blocks Left", typeof(GameViewModel));
+        // 砖块右移
+        public static RoutedCommand BlocksRightCommand =
+            new RoutedCommand("Blocks Right", typeof(GameViewModel));
 
         public int Score
         {
@@ -115,23 +124,79 @@ namespace Tetris.ViewModel
             set
             {
                 nextBlocks = value;
-                OnPropertyChange("NextCurrentBlocks");
+                OnPropertyChange("NextBlocks");
+            }
+        }
+
+        public BlocksShape CurrentShape
+        {
+            get
+            {
+                return currentShape;
+            }
+
+            set
+            {
+                currentShape = value;
+                OnPropertyChange("CurrentShape");
+            }
+        }
+
+        public BlocksStatus CurrentStatus
+        {
+            get
+            {
+                return currentStatus;
+            }
+
+            set
+            {
+                currentStatus = value;
+                OnPropertyChange("CurrentStatus");
+            }
+        }
+
+        public BlocksShape NextShape
+        {
+            get
+            {
+                return nextShape;
+            }
+
+            set
+            {
+                nextShape = value;
+                OnPropertyChange("NextShape");
+            }
+        }
+
+        public BlocksStatus NextStatus
+        {
+            get
+            {
+                return nextStatus;
+            }
+
+            set
+            {
+                nextStatus = value;
+                OnPropertyChange("NextStatus");
             }
         }
 
         public BlocksControl GetCurrentBlocks()
         {
-            currentShape = NextBlocks.BlocksShape;
-            currentStatus = NextBlocks.BlocksStatus;
+            CurrentShape = NextBlocks.BlocksShape;
+            CurrentStatus = NextBlocks.BlocksStatus;
             return NextBlocks;
         }
 
         public BlocksControl GetNextBlocks()
         {
             Random random = new Random();
-            nextShape = (BlocksShape)random.Next(0, Enum.GetNames(typeof(BlocksShape)).Length);
-            nextStatus = (BlocksStatus)random.Next(0, Enum.GetNames(typeof(BlocksStatus)).Length);
-            return new BlocksControl(nextShape, nextStatus);
+            NextShape = (BlocksShape)random.Next(1, Enum.GetNames(typeof(BlocksShape)).Length);
+            NextStatus = (BlocksStatus)random.Next(1, Enum.GetNames(typeof(BlocksStatus)).Length);
+            return new BlocksControl(NextShape, NextStatus);
         }
 
         public void CreateGame()
@@ -147,12 +212,12 @@ namespace Tetris.ViewModel
         }
         public void InitializationGame()
         {
-            Level = 5;
+            Level = 9;
             Score = 0;
-            currentX = 6;
+            currentX = 5;
             currentY = -3;
-            currentShape = CurrentBlocks.BlocksShape;
-            currentStatus = CurrentBlocks.BlocksStatus;
+            CurrentShape = CurrentBlocks.BlocksShape;
+            CurrentStatus = CurrentBlocks.BlocksStatus;
         }
         public void StartNewGame()
         {

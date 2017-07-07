@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:Tetris"
              mc:Ignorable="d" 
              Height="64" Width="64">
-    <Canvas x:Name="blockShowCanvas">
-    </Canvas>
+    <Grid x:Name="blockShowGrid">
+    </Grid>
 </UserControl>
