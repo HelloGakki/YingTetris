@@ -16,11 +16,13 @@
         <CommandBinding Command="vm:GameViewModel.BlocksLeftCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
         <CommandBinding Command="vm:GameViewModel.BlocksRightCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
         <CommandBinding Command="vm:GameViewModel.BlocksStopCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="vm:GameViewModel.BlocksDownCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="Space" Command="vm:GameViewModel.BlocksTransformationCommand" x:Name="_111"/>
         <KeyBinding Key="Left" Command="vm:GameViewModel.BlocksLeftCommand" />
         <KeyBinding Key="Right" Command="vm:GameViewModel.BlocksRightCommand" />
+        <KeyBinding Key="Down" Command="vm:GameViewModel.BlocksDownCommand" />
         <KeyBinding Key="F1" Command="vm:GameViewModel.BlocksStopCommand" />
     </Window.InputBindings>
     <Window.DataContext>

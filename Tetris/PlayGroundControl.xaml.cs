@@ -124,7 +124,7 @@ namespace Tetris
         {
             if (delayDownWorker != null)
                 delayDownWorker.Dispose();
-            delayDownWorker = new Timer(DelayBlocksDown, Game, Timeout.Infinite, 50 * (10 - 9));
+            delayDownWorker = new Timer(DelayAutoBlocksDown, Game, Timeout.Infinite, 50 * (10 - 9));
         }
         private void AutoDownLevelChange()
         {
@@ -166,10 +166,14 @@ namespace Tetris
         /// 开线程调用下降函数
         /// </summary>
         /// <param name="state"></param>
-        private void DelayBlocksDown(object state)
+        private void DelayAutoBlocksDown(object state)
         {
             var data = state as GameViewModel;
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<GameViewModel>(BlocksDown), data);
+        }
+        public void DelayBlocksDown()
+        {
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action<GameViewModel>(BlocksDown), Game);
         }
         /// <summary>
         /// 开线程调用左移函数

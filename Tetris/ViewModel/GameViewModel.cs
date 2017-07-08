@@ -57,6 +57,9 @@ namespace Tetris.ViewModel
         // 砖块右移
         public static RoutedCommand BlocksRightCommand =
             new RoutedCommand("Blocks Right", typeof(GameViewModel));
+        // 砖块加速下移
+        public static RoutedCommand BlocksDownCommand =
+            new RoutedCommand("Blocks Dwon", typeof(GameViewModel));
         // 暂停
         public static RoutedCommand BlocksStopCommand =
             new RoutedCommand("Blocks Stop", typeof(GameViewModel));

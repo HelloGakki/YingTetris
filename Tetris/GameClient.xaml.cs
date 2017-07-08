@@ -43,7 +43,9 @@ namespace Tetris
                 ShowMaster.DelayBlocksLeft();
             if (e.Command == GameViewModel.BlocksRightCommand)
                 ShowMaster.DelayBlocksRight();
-            if (e.Command == GameViewModel.BlocksStopCommand)
+            if (e.Command == GameViewModel.BlocksDownCommand)
+                ShowMaster.DelayBlocksDown();
+                if (e.Command == GameViewModel.BlocksStopCommand)
                 ShowMaster.AutoDownStop();
             e.Handled = true;
         }
@@ -63,6 +65,8 @@ namespace Tetris
             if (e.Command == GameViewModel.BlocksRightCommand)
                 e.CanExecute = true;
             if (e.Command == GameViewModel.BlocksStopCommand)
+                e.CanExecute = true;
+            if (e.Command == GameViewModel.BlocksDownCommand)
                 e.CanExecute = true;
             e.Handled = true;
         }
