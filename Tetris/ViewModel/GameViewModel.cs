@@ -184,8 +184,8 @@ namespace Tetris.ViewModel
         public BlocksControl GetNextBlocks()
         {
             Random random = new Random();
-            NextShape = (BlocksShape)random.Next(1, 7);
-            NextStatus = (BlocksStatus)random.Next(0, 4);
+            NextShape = (BlocksShape)random.Next(1, Enum.GetValues(typeof(BlocksShape)).Length + 1);
+            NextStatus = (BlocksStatus)random.Next(0, Enum.GetValues(typeof(BlocksStatus)).Length);
             return new BlocksControl(NextShape, NextStatus);
         }
 

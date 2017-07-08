@@ -172,6 +172,8 @@ namespace Tetris
         private static void OnBlocksStatusChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var control = d as BlocksControl;
+            if (control.BlocksShape == BlocksShape.TType)
+                Console.WriteLine("TType");
             control.ReDrawBlocks();
         }
 
@@ -189,7 +191,7 @@ namespace Tetris
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (blockArray[(int)BlocksShape - 1, (int)BlocksStatus, y, x] == 1)
+                    if (blockArray[(int)(BlocksShape - 1), (int)BlocksStatus, y, x] == 1)
                     {
                         blocksArray[y, x] = 1;
                         BlockControl blockControl = new BlockControl(BlocksShape);

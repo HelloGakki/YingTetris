@@ -19,7 +19,7 @@
         <CommandBinding Command="vm:GameViewModel.BlocksDownCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
     </Window.CommandBindings>
     <Window.InputBindings>
-        <KeyBinding Key="Space" Command="vm:GameViewModel.BlocksTransformationCommand" x:Name="_111"/>
+        <KeyBinding Key="Up" Command="vm:GameViewModel.BlocksTransformationCommand" x:Name="_111"/>
         <KeyBinding Key="Left" Command="vm:GameViewModel.BlocksLeftCommand" />
         <KeyBinding Key="Right" Command="vm:GameViewModel.BlocksRightCommand" />
         <KeyBinding Key="Down" Command="vm:GameViewModel.BlocksDownCommand" />

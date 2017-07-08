@@ -37,14 +37,17 @@ namespace Tetris
                 ShowMaster.AutoDownInit();
                 ShowMaster.AutoDownStart();
             }
-            if (e.Command == GameViewModel.BlocksTransformationCommand)
-                ShowMaster.BlocksTransformation();
-            if (e.Command == GameViewModel.BlocksLeftCommand)
-                ShowMaster.DelayBlocksLeft();
-            if (e.Command == GameViewModel.BlocksRightCommand)
-                ShowMaster.DelayBlocksRight();
-            if (e.Command == GameViewModel.BlocksDownCommand)
-                ShowMaster.DelayBlocksDown();
+            if (ShowMaster.Game.StopAndStart)
+            {
+                if (e.Command == GameViewModel.BlocksTransformationCommand)
+                    ShowMaster.BlocksTransformation();
+                if (e.Command == GameViewModel.BlocksLeftCommand)
+                    ShowMaster.DelayBlocksLeft();
+                if (e.Command == GameViewModel.BlocksRightCommand)
+                    ShowMaster.DelayBlocksRight();
+                if (e.Command == GameViewModel.BlocksDownCommand)
+                    ShowMaster.DelayBlocksDown();
+            }
                 if (e.Command == GameViewModel.BlocksStopCommand)
                 ShowMaster.AutoDownStop();
             e.Handled = true;
