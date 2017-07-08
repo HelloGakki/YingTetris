@@ -189,7 +189,7 @@ namespace Tetris
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (blockArray[(int)BlocksShape, (int)BlocksStatus, y, x] == 1)
+                    if (blockArray[(int)BlocksShape - 1, (int)BlocksStatus, y, x] == 1)
                     {
                         blocksArray[y, x] = 1;
                         BlockControl blockControl = new BlockControl(BlocksShape);

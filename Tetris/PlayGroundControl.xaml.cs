@@ -106,6 +106,8 @@ namespace Tetris
             if (!IsCheckDown())
             {
                 NextBlockStart();
+                IsGameLose();
+                Eliminate();
             }
             if (gameSurface.Children.Contains(data.CurrentBlocks))
                 gameSurface.Children.Remove(data.CurrentBlocks);
@@ -122,27 +124,43 @@ namespace Tetris
         {
             if (delayDownWorker != null)
                 delayDownWorker.Dispose();
-            delayDownWorker = new Timer(DelayBlocksDown, Game, Timeout.Infinite, 150 * (10 - 9));
+            delayDownWorker = new Timer(DelayBlocksDown, Game, Timeout.Infinite, 50 * (10 - 9));
         }
         private void AutoDownLevelChange()
         {
             if (delayDownWorker == null)
                 return;
-            delayDownWorker.Change(0, 150 * (10 - Level));
+            delayDownWorker.Change(0, 50 * (10 - Level));
         }
         /// <summary>
         /// 自动下降
         /// </summary>
         public void AutoDownStart()
         {
-            delayDownWorker.Change(0, 150 * (10 - Level));
+            delayDownWorker.Change(0, 50 * (10 - Level));
         }
         /// <summary>
         /// 停止自动下降
         /// </summary>
         public void AutoDownStop()
         {
-            delayDownWorker.Change(Timeout.Infinite, Timeout.Infinite);
+            if (!Game.StopAndStart)
+            {
+                AutoDownStart();
+                Game.StopAndStart = true;
+            }
+            else
+            {
+                delayDownWorker.Change(Timeout.Infinite, Timeout.Infinite);
+                Game.StopAndStart = false;
+            }
+        }
+        /// <summary>
+        /// 结束自动下降
+        /// </summary>
+        private void AutoDownOver()
+        {
+            delayDownWorker.Dispose();
         }
         /// <summary>
         /// 开线程调用下降函数
@@ -181,6 +199,28 @@ namespace Tetris
             gameSurface.Children.Clear();
         }
         /// <summary>
+        /// 判断游戏是否继续
+        /// </summary>
+        private void IsGameLose()
+        {
+            if (Game.currentY == -4)
+            {
+                for (var y = 0; y < 4; y++)
+                {
+                    for (var x = 0; x < 4; x++)
+                    {
+                        if (Game.backGround[0, x + Game.currentX] != 0)
+                        {
+                            AutoDownOver();
+                            Game.StopAndStart = false;
+                            MessageBox.Show("胜败乃兵家常事\r\n少侠请重新来过");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        /// <summary>
         /// 查看是否能下降
         /// </summary>
         /// <returns></returns>
@@ -190,18 +230,10 @@ namespace Tetris
             {
                 for (var x = 0; x < 4; x++)
                 {
-
                     if (Game.CurrentBlocks.blocksArray[y, x] == 1)
                     {
-                        if (y + Game.currentY + 1 < 0)
-                        {
-                            if (Game.backGround[0, x + Game.currentX] != 0)
-                            {
-                                AutoDownStop();
-                                MessageBox.Show("少侠请重新来过");
-                            }
+                        if (y + Game.currentY < 0)
                             continue;
-                        }
                         // 到底
                         if (y + Game.currentY + 1 >= Game.backGroundY)
                             return false;
@@ -259,10 +291,14 @@ namespace Tetris
             }
             return true;
         }
+        /// <summary>
+        /// 判断是否可以变形
+        /// </summary>
+        /// <returns></returns>
         private bool isCheckTransformation()
         {
-            BlocksShape blocksShapeTemp = Game.CurrentShape;
-            BlocksStatus blocksStatusTemp = Game.CurrentStatus;
+            BlocksShape blocksShapeTemp = Game.CurrentBlocks.BlocksShape;
+            BlocksStatus blocksStatusTemp = Game.CurrentBlocks.BlocksStatus;
 
             if (blocksStatusTemp + 1 > BlocksStatus.Rotation270)
                 blocksStatusTemp = BlocksStatus.RotationZero;
@@ -272,22 +308,21 @@ namespace Tetris
             {
                 for (int x = 0; x < 4; x++)
                 {
-                    if (BlocksControl.blockArray[(int)blocksShapeTemp, (int)blocksStatusTemp, y, x] == 1)
-                    //blockArrayTemp[y, x] = 1;
+                    if (BlocksControl.blockArray[(int)blocksShapeTemp - 1, (int)blocksStatusTemp, y, x] == 1)
                     {
-                        // 判断右边
-                        if (x + Game.currentX  >= Game.backGroundX)
-                            return false;
 
+                        if (Game.currentY < 0)
+                            return false;
+                        // 判断右边
+                        if (x + Game.currentX >= Game.backGroundX)
+                            return false;
                         // 判断左边
                         if (x + Game.currentX < 0)
                             return false;
-
                         // 判断下边
-                        if (y + Game.currentY > Game.backGroundY)
+                        if (y + Game.currentY >= Game.backGroundY - 1)
                             return false;
-
-                        // 下方有砖块
+                        // 判断四周是否有砖，需要放在最后一个，不然可能出险数组超界的情况
                         if (Game.backGround[y + Game.currentY, x + Game.currentX] != 0)
                             return false;
                     }
@@ -300,20 +335,23 @@ namespace Tetris
         /// </summary>
         public void BlocksTransformation()
         {
-            if (!isCheckTransformation())
-                return;
-            if (Game.CurrentBlocks.BlocksStatus + 1 > BlocksStatus.Rotation270)
-                Game.CurrentBlocks.BlocksStatus = BlocksStatus.RotationZero;
-            else
-                Game.CurrentBlocks.BlocksStatus = Game.CurrentBlocks.BlocksStatus + 1;
+            if (isCheckTransformation())
+            {
+                if (Game.CurrentBlocks.BlocksStatus + 1 > BlocksStatus.Rotation270)
+                    Game.CurrentBlocks.BlocksStatus = BlocksStatus.RotationZero;
+                else
+                    Game.CurrentBlocks.BlocksStatus = Game.CurrentBlocks.BlocksStatus + 1;
+            }
         }
         /// <summary>
         /// 生成新的砖块，并重新设定坐标
         /// </summary>
         private void NextBlockStart()
         {
+            // 清除当前砖块
             if (gameSurface.Children.Contains(Game.CurrentBlocks))
                 gameSurface.Children.Remove(Game.CurrentBlocks);
+            // 将当前砖块散装装入背景
             foreach (BlockControl blockControl in Game.CurrentBlocks.GetBlocksList())
             {
                 Point blockPoint = blockControl.TranslatePoint(new Point(0, 0), Game.CurrentBlocks.blockShowGrid);
@@ -326,24 +364,24 @@ namespace Tetris
                 newBlockControl.VerticalAlignment = VerticalAlignment.Top;
                 gameSurface.Children.Add(newBlockControl);
             }
-            //Eliminate();
             Game.currentX = 5;
-            Game.currentY = -3;
+            Game.currentY = -4;
             Game.CurrentBlocks = Game.GetCurrentBlocks();
             Game.NextBlocks = Game.GetNextBlocks();
         }
-
+        /// <summary>
+        /// 消除得分
+        /// </summary>
         public void Eliminate()
         {
-            //gameSurface.Children.Clear();
 
             bool isEliminate = false;
-            int[,] backGroundTemp = new int[Game.backGroundY, Game.backGroundX];
+            int[,] backGroundTemp;
             for (int y = 0; y < Game.backGroundY; y++)
             {
                 for (int x = 0; x < Game.backGroundX; x++)
                 {
-                    if (Game.backGround[y, x] == 1)
+                    if (Game.backGround[y, x] != 0)
                         isEliminate = true;
                     else
                     {
@@ -353,6 +391,11 @@ namespace Tetris
                 }
                 if (isEliminate)
                 {
+                    backGroundTemp = new int[Game.backGroundY, Game.backGroundX];
+                    Game.Score += 10;
+                    if (Game.Level < 9 && Game.Score % 100 == 0)
+                        Game.Level += 1;
+                    gameSurface.Children.Clear();
                     for (int staticY = Game.backGroundY - 1; staticY > y; staticY--)
                     {
                         for (int staticX = 0; staticX < Game.backGroundX; staticX++)
@@ -362,18 +405,25 @@ namespace Tetris
                                 backGroundTemp[staticY, staticX] = Game.backGround[staticY, staticX];
                                 BlockControl newBlockControl = new BlockControl((BlocksShape)Game.backGround[staticY, staticX]);
                                 newBlockControl.Margin = new Thickness(staticX * 16, staticY * 16, 0, 0);
+                                newBlockControl.VerticalAlignment = VerticalAlignment.Top;
+                                newBlockControl.HorizontalAlignment = HorizontalAlignment.Left;
                                 gameSurface.Children.Add(newBlockControl);
                             }
                         }
                     }
-                    for (int moveY = 1; moveY < Game.backGroundY - 1 - (Game.backGroundY - y); moveY++)
+                    for (int moveY = 1; moveY <= y; moveY++)
                     {
                         for (int moveX = 0; moveX < Game.backGroundX; moveX++)
                         {
-                            backGroundTemp[moveY, moveX] = Game.backGround[moveY - 1, moveX];
-                            BlockControl newBlockControl = new BlockControl((BlocksShape)Game.backGround[moveY, moveX]);
-                            newBlockControl.Margin = new Thickness(moveX * 16, moveY * 16, 0, 0);
-                            gameSurface.Children.Add(newBlockControl);
+                            if (Game.backGround[moveY - 1, moveX] != 0)
+                            {
+                                backGroundTemp[moveY, moveX] = Game.backGround[moveY - 1, moveX];
+                                BlockControl newBlockControl = new BlockControl((BlocksShape)Game.backGround[moveY - 1, moveX]);
+                                newBlockControl.Margin = new Thickness(moveX * 16, moveY * 16, 0, 0);
+                                newBlockControl.VerticalAlignment = VerticalAlignment.Top;
+                                newBlockControl.HorizontalAlignment = HorizontalAlignment.Left;
+                                gameSurface.Children.Add(newBlockControl);
+                            }
                         }
                     }
                     Game.backGround = backGroundTemp;

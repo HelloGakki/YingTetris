@@ -18,15 +18,15 @@ namespace Tetris.ViewModel
         /// </summary>
         public int currentX;
         public int currentY;
-        private BlocksShape currentShape;
-        private BlocksStatus currentStatus;
+        //private BlocksShape currentShape;
+        //private BlocksStatus currentStatus;
         /// <summary>
         /// 下一个砖块状态和形状
         /// </summary>
         private BlocksShape nextShape;
         private BlocksStatus nextStatus;
 
-
+        private bool _stopAndStart;
         private int _score, _level;
         private Player _currentPlayer;
         private BlocksControl currentBlocks, nextBlocks;
@@ -57,6 +57,9 @@ namespace Tetris.ViewModel
         // 砖块右移
         public static RoutedCommand BlocksRightCommand =
             new RoutedCommand("Blocks Right", typeof(GameViewModel));
+        // 暂停
+        public static RoutedCommand BlocksStopCommand =
+            new RoutedCommand("Blocks Stop", typeof(GameViewModel));
 
         public int Score
         {
@@ -128,34 +131,6 @@ namespace Tetris.ViewModel
             }
         }
 
-        public BlocksShape CurrentShape
-        {
-            get
-            {
-                return currentShape;
-            }
-
-            set
-            {
-                currentShape = value;
-                OnPropertyChange("CurrentShape");
-            }
-        }
-
-        public BlocksStatus CurrentStatus
-        {
-            get
-            {
-                return currentStatus;
-            }
-
-            set
-            {
-                currentStatus = value;
-                OnPropertyChange("CurrentStatus");
-            }
-        }
-
         public BlocksShape NextShape
         {
             get
@@ -184,18 +159,30 @@ namespace Tetris.ViewModel
             }
         }
 
+        public bool StopAndStart
+        {
+            get
+            {
+                return _stopAndStart;
+            }
+
+            set
+            {
+                _stopAndStart = value;
+                OnPropertyChange("StopAndStart");
+            }
+        }
+
         public BlocksControl GetCurrentBlocks()
         {
-            CurrentShape = NextBlocks.BlocksShape;
-            CurrentStatus = NextBlocks.BlocksStatus;
             return NextBlocks;
         }
 
         public BlocksControl GetNextBlocks()
         {
             Random random = new Random();
-            NextShape = (BlocksShape)random.Next(1, Enum.GetNames(typeof(BlocksShape)).Length);
-            NextStatus = (BlocksStatus)random.Next(1, Enum.GetNames(typeof(BlocksStatus)).Length);
+            NextShape = (BlocksShape)random.Next(1, 7);
+            NextStatus = (BlocksStatus)random.Next(0, 4);
             return new BlocksControl(NextShape, NextStatus);
         }
 
@@ -212,18 +199,17 @@ namespace Tetris.ViewModel
         }
         public void InitializationGame()
         {
-            Level = 9;
+            Level = 1;
             Score = 0;
             currentX = 5;
-            currentY = -3;
-            CurrentShape = CurrentBlocks.BlocksShape;
-            CurrentStatus = CurrentBlocks.BlocksStatus;
+            currentY = -4;
         }
         public void StartNewGame()
         {
             CreateGame();
             CreatePlayer();
             InitializationGame();
+            StopAndStart = true;
         }
     }
 }

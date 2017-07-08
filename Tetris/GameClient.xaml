@@ -7,7 +7,7 @@
         xmlns:src="clr-namespace:Tetris"
         xmlns:vm="clr-namespace:Tetris.ViewModel"
         mc:Ignorable="d"
-        Title="GameClient" Height="400" Width="300" ResizeMode="NoResize">
+        Title="Tetris_By Mr.BiuBiuBiu" Height="400" Width="300" ResizeMode="NoResize">
     <Window.CommandBindings>
         <CommandBinding Command="Close" CanExecute="CommandCanExecute" Executed="CommandExecuted"/>
         <CommandBinding Command="vm:GameViewModel.StartNewGameCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
@@ -15,11 +15,13 @@
         <CommandBinding Command="vm:GameViewModel.BlocksTransformationCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
         <CommandBinding Command="vm:GameViewModel.BlocksLeftCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
         <CommandBinding Command="vm:GameViewModel.BlocksRightCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
+        <CommandBinding Command="vm:GameViewModel.BlocksStopCommand" CanExecute="CommandCanExecute" Executed="CommandExecuted" />
     </Window.CommandBindings>
     <Window.InputBindings>
         <KeyBinding Key="Space" Command="vm:GameViewModel.BlocksTransformationCommand" x:Name="_111"/>
         <KeyBinding Key="Left" Command="vm:GameViewModel.BlocksLeftCommand" />
         <KeyBinding Key="Right" Command="vm:GameViewModel.BlocksRightCommand" />
+        <KeyBinding Key="F1" Command="vm:GameViewModel.BlocksStopCommand" />
     </Window.InputBindings>
     <Window.DataContext>
         <vm:GameViewModel/>
@@ -46,7 +48,7 @@
         </DockPanel>
         <DockPanel Grid.Row="1" >
             <src:PlayGroundControl x:Name="ShowMaster" Game="{Binding }" Level="{Binding Level}" />
-            <WrapPanel DockPanel.Dock="Right" Background="#FFE4E4E4">
+            <WrapPanel DockPanel.Dock="Right" Background="#FFE4E4E4" >
                 <Label Content="玩家:"/>
                 <Label x:Name="playerLabel" Content="{Binding CurrentPlayer.Name}" FontWeight="Bold"/>
                 <Label Content="Level:"/>
@@ -54,9 +56,7 @@
                 <Label Content="Score:"/>
                 <Label x:Name="scoreLable" Content="{Binding Score}" FontWeight="Bold" />
                 <Label Content="Next:" Margin="0 22 0 0"/>
-                <Canvas x:Name="hintCanvas" Width="64" Height="64" Margin="22 10 0 0" >
-                    <src:BlocksControl BlocksShape="{Binding NextShape}" BlocksStatus="{Binding NextStatus}"/>
-                </Canvas>
+                <src:ShowNextBlocksControl NextBlocks="{Binding NextBlocks}" Margin="22,10,0,0"/>
             </WrapPanel>
         </DockPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFE4E4E4">

@@ -48,6 +48,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>mushroom_128px_1206753_easyicon.net.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -67,6 +70,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Player.cs" />
+    <Compile Include="ShowNextBlocksControl.xaml.cs">
+      <DependentUpon>ShowNextBlocksControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\GameViewModel.cs" />
     <Page Include="BlockControl.xaml">
       <SubType>Designer</SubType>
@@ -104,6 +110,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="PlayGroundControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ShowNextBlocksControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -151,6 +161,12 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Image\mushroom_128px_1206753_easyicon.net.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="mushroom_128px_1206753_easyicon.net.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
