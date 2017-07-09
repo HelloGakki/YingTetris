@@ -128,7 +128,7 @@ namespace Tetris
         }
         private void AutoDownLevelChange()
         {
-            if (delayDownWorker == null)
+            if (delayDownWorker == null || Game.StopAndStart == false)
                 return;
             delayDownWorker.Change(0, 50 * (10 - Level));
         }
@@ -171,6 +171,9 @@ namespace Tetris
             var data = state as GameViewModel;
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<GameViewModel>(BlocksDown), data);
         }
+        /// <summary>
+        /// 开线程调用下移函数
+        /// </summary>
         public void DelayBlocksDown()
         {
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<GameViewModel>(BlocksDown), Game);
@@ -182,6 +185,9 @@ namespace Tetris
         {
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<GameViewModel>(BlocksLeft), Game);
         }
+        /// <summary>
+        /// 开线程调用右移函数
+        /// </summary>
         public void DelayBlocksRight()
         {
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action<GameViewModel>(BlocksRight), Game);
@@ -209,19 +215,17 @@ namespace Tetris
         {
             if (Game.currentY == -4)
             {
-                for (var y = 0; y < 4; y++)
+                for (var x = 0; x < 4; x++)
                 {
-                    for (var x = 0; x < 4; x++)
+                    if (Game.backGround[0, x + Game.currentX] != 0)
                     {
-                        if (Game.backGround[0, x + Game.currentX] != 0)
-                        {
-                            AutoDownOver();
-                            Game.StopAndStart = false;
-                            MessageBox.Show("胜败乃兵家常事\r\n少侠请重新来过");
-                            return;
-                        }
+                        AutoDownOver();
+                        Game.StopAndStart = false;
+                        MessageBox.Show("胜败乃兵家常事\r\n少侠请重新来过");
+                        return;
                     }
                 }
+
             }
         }
         /// <summary>
