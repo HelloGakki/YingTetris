@@ -221,7 +221,7 @@ namespace Tetris
                     {
                         AutoDownOver();
                         Game.StopAndStart = false;
-                        MessageBox.Show("胜败乃兵家常事\r\n少侠请重新来过");
+                        MessageBox.Show("胜败乃兵家常事\r\n少侠请重新来过...", "GameOver");
                         return;
                     }
                 }

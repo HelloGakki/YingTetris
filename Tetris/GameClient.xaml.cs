@@ -28,6 +28,13 @@ namespace Tetris
         {
             if (e.Command == ApplicationCommands.Close)
                 this.Close();
+
+            if (e.Command == GameViewModel.ShowAboutCommand)
+            {
+                var aboutWin = new About();
+                aboutWin.ShowDialog();
+            }
+
             if (e.Command == GameViewModel.StartNewGameCommand)
             {
                 var model = new GameViewModel();
@@ -37,6 +44,7 @@ namespace Tetris
                 ShowMaster.AutoDownInit();
                 ShowMaster.AutoDownStart();
             }
+
             if (ShowMaster.Game.StopAndStart)
             {
                 if (e.Command == GameViewModel.BlocksTransformationCommand)
@@ -60,7 +68,7 @@ namespace Tetris
             if (e.Command == GameViewModel.StartNewGameCommand)
                 e.CanExecute = true;
             if (e.Command == GameViewModel.ShowAboutCommand)
-                e.CanExecute = false;
+                e.CanExecute = true;
             if (e.Command == GameViewModel.BlocksTransformationCommand)
                 e.CanExecute = true;
             if (e.Command == GameViewModel.BlocksLeftCommand)
