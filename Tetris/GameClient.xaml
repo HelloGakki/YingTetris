@@ -63,7 +63,7 @@
         </DockPanel>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Background="#FFE4E4E4">
             <Label Content="Message:"/>
-            <Label Content="测试版本" VerticalAlignment="Center"/>
+            <Label Content="内测版本" VerticalAlignment="Center"/>
         </StackPanel>
     </Grid>
 </Window>

@@ -213,7 +213,7 @@ namespace Tetris
         /// </summary>
         private void IsGameLose()
         {
-            if (Game.currentY == -4)
+            if (Game.currentY <= 0)
             {
                 for (var x = 0; x < 4; x++)
                 {
